@@ -17,10 +17,14 @@ import {
   TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n";
+import i18n from "@/lib/i18n";
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -31,30 +35,26 @@ const LandingPage = () => {
   const features = [
     {
       icon: FileText,
-      title: "Smart Document Organization",
-      description:
-        "AI-powered categorization and intelligent filing system that adapts to your workflow patterns.",
+      title: t("features.list.organization.title"),
+      description: t("features.list.organization.description"),
       color: "blue",
     },
     {
       icon: Shield,
-      title: "Enterprise Security",
-      description:
-        "Bank-level encryption and compliance with government security standards for sensitive documents.",
+      title: t("features.list.security.title"),
+      description: t("features.list.security.description"),
       color: "green",
     },
     {
       icon: Zap,
-      title: "Lightning Fast Search",
-      description:
-        "Find any document in milliseconds with our advanced search algorithms and indexing technology.",
+      title: t("features.list.search.title"),
+      description: t("features.list.search.description"),
       color: "purple",
     },
     {
       icon: Users,
-      title: "Seamless Collaboration",
-      description:
-        "Real-time collaboration tools with role-based access control and approval workflows.",
+      title: t("features.list.collaboration.title"),
+      description: t("features.list.collaboration.description"),
       color: "orange",
     },
   ];
@@ -98,23 +98,28 @@ const LandingPage = () => {
                 <span className="text-white font-bold text-lg">K</span>
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">
-                KMRL DocManager
+                {t("landnavbar.brand")}
               </span>
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              {["Features", "About"].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
-                >
-                  {item}
-                </a>
-              ))}
+              <a
+                href="#features"
+                className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+              >
+                {t("landnavbar.menu.features")}
+              </a>
+              <select
+                value={i18n.language}
+                onChange={(e) => i18n.changeLanguage(e.target.value)}
+                className="rounded border px-2 py-1 text-sm text-pink-700"
+              >
+                <option value="en">English</option>
+                <option value="ml">മലയാളം</option>
+              </select>
               <Link href="/login">
                 <button className="bg-gradient-to-r from-yellow-600 to-green-600 text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:scale-105 transition-all duration-200">
-                  Get Started
+                  {t("landnavbar.menu.getStarted")}
                 </button>
               </Link>
             </div>
@@ -136,17 +141,21 @@ const LandingPage = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200">
             <div className="px-4 py-4 space-y-4">
-              {["Features", "Solutions", "Pricing", "About"].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="block text-gray-600 hover:text-blue-600 transition-colors font-medium"
-                >
-                  {item}
-                </a>
-              ))}
+              <a
+                href="#features"
+                className="block text-gray-600 hover:text-blue-600 transition-colors font-medium"
+              >
+                {t("landnavbar.menu.features")}
+              </a>
+
+              <a
+                href="#about"
+                className="block text-gray-600 hover:text-blue-600 transition-colors font-medium"
+              >
+                {t("landnavbar.menu.language")}
+              </a>
               <button className="w-full bg-gradient-to-r from-yellow-600 to-green-600 text-white px-6 py-2 rounded-full">
-                Get Started
+                {t("landnavbar.menu.getStarted")}
               </button>
             </div>
           </div>
@@ -155,7 +164,6 @@ const LandingPage = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-yellow-50 to-purple-50">
-        {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <FloatingElement delay={0} amplitude={30}>
             <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
@@ -171,26 +179,18 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="animate-fadeInUp">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              Transform Your
-              <span className="bg-gradient-to-r from-green-400 to-yellow-300 bg-clip-text text-transparent">
-                {" "}
-                Document{" "}
-              </span>
-              Management
+              {t("hero.title")}
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Streamline KMRL operations with AI-powered document organization,
-              enterprise-grade security, and seamless collaboration tools.
+              {t("hero.subtitle")}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
               <button className="group bg-white text-gray-700 px-8 py-4 rounded-full text-lg font-semibold border-2 border-gray-200 hover:border-green-300 hover:shadow-lg transition-all duration-300 flex items-center space-x-2">
                 <Play className="w-5 h-5" />
-                <span>Watch Demo</span>
+                <span>{t("hero.watchDemo")}</span>
               </button>
             </div>
-
-            {/* Stats */}
           </div>
         </div>
 
@@ -205,15 +205,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fadeInUp">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
-              Powerful Features for Modern
-              <span className="bg-gradient-to-r from-yellow-500 to-green-600 bg-clip-text text-transparent">
-                {" "}
-                Workflow
-              </span>
+              {t("features.heading")}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Every feature is designed to enhance productivity and streamline
-              document management for KMRLs unique requirements.
+              {t("features.description")}
             </p>
           </div>
 
@@ -250,47 +245,69 @@ const LandingPage = () => {
                 <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-yellow-600 rounded-xl flex items-center justify-center">
                   <span className="text-white font-bold text-lg">K</span>
                 </div>
-                <span className="text-xl font-bold">KMRL DocManager</span>
+                <span className="text-xl font-bold">{t("footer.brand")}</span>
               </div>
-              <p className="text-gray-400">
-                Revolutionizing document management for modern organizations.
-              </p>
+              <p className="text-gray-400">{t("footer.tagline")}</p>
             </div>
 
-            {[
-              {
-                title: "Company",
-                links: ["About", "Blog", "News"],
-              },
-              {
-                title: "Support",
-                links: ["Help Center", "Contact", "Privacy", "Terms"],
-              },
-            ].map((section, index) => (
-              <div key={index}>
-                <h3 className="font-semibold mb-4">{section.title}</h3>
-                <ul className="space-y-2">
-                  {section.links.map((link) => (
-                    <li key={link}>
-                      <a
-                        href="#"
-                        className="text-gray-400 hover:text-white transition-colors"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            <div>
+              <h3 className="font-semibold mb-4">
+                {t("footer.company.title")}
+              </h3>
+              <ul className="space-y-2">
+                {(() => {
+                  const links = t("footer.company.links", {
+                    returnObjects: true,
+                  });
+                  return (Array.isArray(links) ? links : []).map(
+                    (link: string) => (
+                      <li key={link}>
+                        <a
+                          href="#"
+                          className="text-gray-400 hover:text-white transition-colors"
+                        >
+                          {link}
+                        </a>
+                      </li>
+                    )
+                  );
+                })()}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">
+                {t("footer.support.title")}
+              </h3>
+              <ul className="space-y-2">
+                {(() => {
+                  const links = t("footer.support.links", {
+                    returnObjects: true,
+                  });
+                  return (Array.isArray(links) ? links : []).map(
+                    (link: string) => (
+                      <li key={link}>
+                        <a
+                          href="#"
+                          className="text-gray-400 hover:text-white transition-colors"
+                        >
+                          {link}
+                        </a>
+                      </li>
+                    )
+                  );
+                })()}
+              </ul>
+            </div>
           </div>
 
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 KMRL DocManager. All rights reserved.</p>
+            <p>{t("footer.copyright")}</p>
           </div>
         </div>
       </footer>
 
+      {/* Animations */}
       <style jsx>{`
         @keyframes fadeInUp {
           from {

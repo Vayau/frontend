@@ -1,0 +1,88 @@
+{
+  "navbar": {
+    "welcome": "Welcome"
+  },
+  "dashboard": {
+    "title": "Your Dashboard",
+    "subtitle": "Manage and organize your KMRL documents efficiently"
+  },
+  "search": {
+    "placeholder": "Search documents..."
+  },
+  "filter": {
+    "categories": {
+      "all": "All",
+      "projects": "Projects",
+      "reports": "Reports",
+      "finance": "Finance",
+      "environmental": "Environmental",
+      "hr": "HR",
+      "technical": "Technical"
+    }
+  },
+  "table": {
+    "document": "Document",
+    "category": "Category",
+    "modified": "Modified"
+  },
+  "documents": {
+    "project_proposal": "Project Proposal - Metro Line Extension",
+    "safety_report": "Safety Compliance Report Q3",
+    "budget_analysis": "Budget Analysis 2024",
+    "environmental": "Environmental Impact Assessment",
+    "employee_handbook": "Employee Handbook 2024",
+    "technical_specs": "Technical Specifications"
+  },
+  "actions": {
+    "view": "View",
+    "download": "Download"
+  },
+  "landnavbar": {
+    "brand": "KMRL DocManager",
+    "menu": {
+      "features": "Features",
+      "language": "Select Language",
+      "getStarted": "Get Started"
+    }
+  },
+  "hero": {
+    "title": "Transform Your Document Management",
+    "subtitle": "Streamline KMRL operations with AI-powered document organization, enterprise-grade security, and seamless collaboration tools.",
+    "watchDemo": "Watch Demo"
+  },
+  "features": {
+    "heading": "Powerful Features for Modern Workflow",
+    "description": "Every feature is designed to enhance productivity and streamline document management for KMRL's unique requirements.",
+    "list": {
+      "organization": {
+        "title": "Smart Document Organization",
+        "description": "AI-powered categorization and intelligent filing system that adapts to your workflow patterns."
+      },
+      "security": {
+        "title": "Enterprise Security",
+        "description": "Bank-level encryption and compliance with government security standards for sensitive documents."
+      },
+      "search": {
+        "title": "Lightning Fast Search",
+        "description": "Find any document in milliseconds with our advanced search algorithms and indexing technology."
+      },
+      "collaboration": {
+        "title": "Seamless Collaboration",
+        "description": "Real-time collaboration tools with role-based access control and approval workflows."
+      }
+    }
+  },
+  "footer": {
+    "brand": "KMRL DocManager",
+    "tagline": "Revolutionizing document management for modern organizations.",
+    "company": {
+      "title": "Company",
+      "links": ["About", "Blog", "News"]
+    },
+    "support": {
+      "title": "Support",
+      "links": ["Help Center", "Contact", "Privacy", "Terms"]
+    },
+    "copyright": "© 2024 KMRL DocManager. All rights reserved."
+  }
+}

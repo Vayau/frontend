@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n";
 import {
   Search,
   Bell,
   User,
-
   Download,
   Eye,
   MoreVertical,
-
   Grid,
   List,
   ChevronDown,
@@ -19,62 +19,32 @@ import Link from "next/link";
 const mockDocuments = [
   {
     id: 1,
-    name: "Project Proposal - Metro Line Extension",
+    name: "documents.project_proposal",
     type: "PDF",
     size: "2.4 MB",
     lastModified: "2 hours ago",
-    category: "Projects",
+    category: "filter.categories.projects",
     status: "Active",
     priority: "High",
   },
   {
     id: 2,
-    name: "Safety Compliance Report Q3",
+    name: "documents.safety_report",
     type: "DOCX",
     size: "1.8 MB",
     lastModified: "1 day ago",
-    category: "Reports",
+    category: "filter.categories.reports",
     status: "Under Review",
     priority: "Medium",
   },
   {
     id: 3,
-    name: "Budget Analysis 2024",
+    name: "documents.budget_analysis",
     type: "XLSX",
     size: "3.2 MB",
     lastModified: "3 days ago",
-    category: "Finance",
+    category: "filter.categories.finance",
     status: "Approved",
-    priority: "High",
-  },
-  {
-    id: 4,
-    name: "Environmental Impact Assessment",
-    type: "PDF",
-    size: "5.7 MB",
-    lastModified: "1 week ago",
-    category: "Environmental",
-    status: "Draft",
-    priority: "Medium",
-  },
-  {
-    id: 5,
-    name: "Employee Handbook 2024",
-    type: "PDF",
-    size: "1.2 MB",
-    lastModified: "2 weeks ago",
-    category: "HR",
-    status: "Published",
-    priority: "Low",
-  },
-  {
-    id: 6,
-    name: "Technical Specifications",
-    type: "DOCX",
-    size: "4.1 MB",
-    lastModified: "3 weeks ago",
-    category: "Technical",
-    status: "Active",
     priority: "High",
   },
 ];
@@ -90,6 +60,7 @@ const categories = [
 ];
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const [documents, setDocuments] = useState(mockDocuments);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [viewMode, setViewMode] = useState("grid");
@@ -166,7 +137,7 @@ const Dashboard = () => {
                     <span className="text-white font-bold text-sm">K</span>
                   </div>
                   <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">
-                    Welcome
+                    {t("navbar.welcome")}
                   </span>
                 </div>
               </div>
@@ -198,7 +169,7 @@ const Dashboard = () => {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="text"
-                    placeholder="Search documents..."
+                    placeholder={t("search.placeholder")}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
@@ -231,11 +202,9 @@ const Dashboard = () => {
                   }`}
                 >
                   <h1 className="text-3xl font-bold text-slate-900 mb-2">
-                    Your Dashboard
+                    {t("dashboard.title")}
                   </h1>
-                  <p className="text-slate-600">
-                    Manage and organize your KMRL documents efficiently
-                  </p>
+                  <p className="text-slate-600">{t("dashboard.subtitle")}</p>
                 </div>
               </div>
               {/* View Toggle */}
@@ -284,7 +253,7 @@ const Dashboard = () => {
                       <div className="text-2xl">{getFileIcon(doc.type)}</div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                          {doc.name}
+                          {t(doc.name)}
                         </h3>
                         <p className="text-sm text-slate-500">
                           {doc.size} • {doc.lastModified}
@@ -298,7 +267,7 @@ const Dashboard = () => {
 
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
-                      {doc.category}
+                      {t(doc.category)}
                     </span>
                     <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Link href="/summary">
@@ -321,14 +290,14 @@ const Dashboard = () => {
                   <thead className="bg-slate-50 border-b border-slate-200">
                     <tr>
                       <th className="text-left py-4 px-6 font-semibold text-slate-900">
-                        Document
+                        {t("table.document")}
                       </th>
                       <th className="text-left py-4 px-6 font-semibold text-slate-900">
-                        Category
+                        {t("table.category")}
                       </th>
 
                       <th className="text-left py-4 px-6 font-semibold text-slate-900">
-                        Modified
+                        {t("table.modified")}
                       </th>
                     </tr>
                   </thead>
