@@ -61,7 +61,7 @@ const DocumentUploadPage: React.FC = () => {
     title: "",
     type: "",
     language: "",
-    source: "",
+    source: "official website",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -161,10 +161,6 @@ const DocumentUploadPage: React.FC = () => {
       newErrors.language = "Document language is required";
     }
 
-    if (!formData.source) {
-      newErrors.source = "Source is required";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -198,7 +194,7 @@ const DocumentUploadPage: React.FC = () => {
     uploadFormData.append("title", formData.title);
     uploadFormData.append("type", formData.type);
     uploadFormData.append("language", formData.language);
-    uploadFormData.append("source", formData.source);
+    uploadFormData.append("source", "official website");
     uploadFormData.append("uploaded_by", userId);
 
     setIsSubmitting(true);
@@ -470,38 +466,6 @@ const DocumentUploadPage: React.FC = () => {
                             <div className="absolute -bottom-6 left-0 flex items-center text-red-500 text-sm animate-slide-in">
                               <AlertCircle className="w-4 h-4 mr-1" />
                               {errors.title}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="md:col-span-3">
-                        <label
-                          htmlFor="source"
-                          className="block text-sm font-bold text-gray-900 mb-2 flex items-center"
-                        >
-                          <FileText className="w-4 h-4 mr-2 text-blue-600" />
-                          Source *
-                        </label>
-                        <div className="relative">
-                          <input
-                            id="source"
-                            type="text"
-                            value={formData.source}
-                            onChange={(e) =>
-                              handleInputChange("source", e.target.value)
-                            }
-                            className={`w-full px-4 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 bg-white/80 backdrop-blur-sm text-lg ${
-                              errors.source
-                                ? "border-red-300 focus:border-red-500"
-                                : "border-gray-200 hover:border-blue-300"
-                            }`}
-                            placeholder="Enter a descriptive title for your document"
-                            maxLength={200}
-                          />
-                          {errors.source && (
-                            <div className="absolute -bottom-6 left-0 flex items-center text-red-500 text-sm animate-slide-in">
-                              <AlertCircle className="w-4 h-4 mr-1" />
-                              {errors.source}
                             </div>
                           )}
                         </div>

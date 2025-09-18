@@ -83,7 +83,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
-      {/* Navigation */}
+     
       <nav
         className={`fixed w-full z-50 transition-all duration-300 ${
           scrollY > 50
@@ -137,7 +137,7 @@ const LandingPage = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+    
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200">
             <div className="px-4 py-4 space-y-4">
@@ -162,7 +162,7 @@ const LandingPage = () => {
         )}
       </nav>
 
-      {/* Hero Section */}
+    
       <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-yellow-50 to-purple-50">
         <div className="absolute inset-0 overflow-hidden">
           <FloatingElement delay={0} amplitude={30}>
