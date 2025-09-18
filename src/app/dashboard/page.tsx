@@ -83,13 +83,6 @@ const Dashboard = () => {
   });
 
   
-  
-  
-  
-
- 
-
-
 
   const getFileIcon = (type: unknown) => {
     switch (type) {
