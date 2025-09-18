@@ -8,18 +8,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "../stores/UserStore";
 
 export function LoginForm({
-
   className,
   ...props
-}: React.ComponentProps<"div">)
- {
+}: React.ComponentProps<"div">) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const setUserId = useUserStore((state) => state.setUserId);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,19 +30,25 @@ export function LoginForm({
     try {
       const res = await axios.post(
         "http://127.0.0.1:5001/auth/login",
-        {
-          email,
-          password,
-        },
+        { email, password },
         { withCredentials: true }
       );
 
       console.log("Login success:", res.data);
+
+      if (res.data.user?.id) {
+        console.log("User ID from backend:", res.data.user.id);
+        setUserId(res.data.user.id);
+      }
+
       router.push("/dashboard");
     } catch (err: unknown) {
       console.error(err);
       if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Login failed");
+        const message =
+          err.response?.data?.message ||
+          "Login failed: Invalid Username or Password";
+        setError(message);
       } else {
         setError("Login failed");
       }
