@@ -59,6 +59,7 @@ const categories = [
   "Technical",
 ];
 
+
 const Dashboard = () => {
   const { t } = useTranslation();
   const [documents, setDocuments] = useState(mockDocuments);
@@ -68,7 +69,7 @@ const Dashboard = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Trigger loading animation
+ 
     setTimeout(() => setIsLoaded(true), 300);
   }, []);
 
@@ -81,35 +82,14 @@ const Dashboard = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const getStatusColor = (status: unknown) => {
-    switch (status) {
-      case "Active":
-        return "bg-green-100 text-green-800";
-      case "Under Review":
-        return "bg-yellow-100 text-yellow-800";
-      case "Approved":
-        return "bg-blue-100 text-blue-800";
-      case "Draft":
-        return "bg-gray-100 text-gray-800";
-      case "Published":
-        return "bg-purple-100 text-purple-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  
+  
+  
+  
 
-  const getPriorityColor = (priority: unknown) => {
-    switch (priority) {
-      case "High":
-        return "bg-red-100 text-red-800";
-      case "Medium":
-        return "bg-orange-100 text-orange-800";
-      case "Low":
-        return "bg-green-100 text-green-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+ 
+
+
 
   const getFileIcon = (type: unknown) => {
     switch (type) {
@@ -124,10 +104,12 @@ const Dashboard = () => {
     }
   };
 
+
+
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        {/* Navigation Bar */}
+      
         <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 transition-all duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
@@ -155,7 +137,6 @@ const Dashboard = () => {
           </div>
         </nav>
 
-        {/* Controls Section */}
         <div
           className={` -mt-6 mb-6 transform transition-all duration-700 delay-300 ${
             isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
@@ -164,7 +145,7 @@ const Dashboard = () => {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
               <div className="flex flex-col sm:flex-row gap-4 flex-1">
-                {/* Search Bar */}
+                
                 <div className="relative flex-1 max-w-md">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
@@ -176,7 +157,7 @@ const Dashboard = () => {
                   />
                 </div>
 
-                {/* Category Filter */}
+              
                 <div className="relative">
                   <select
                     value={selectedCategory}
@@ -193,7 +174,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header Section */}
+               
                 <div
                   className={`mb-4 transform transition-all duration-700 ${
                     isLoaded
@@ -207,7 +188,7 @@ const Dashboard = () => {
                   <p className="text-slate-600">{t("dashboard.subtitle")}</p>
                 </div>
               </div>
-              {/* View Toggle */}
+           
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setViewMode("grid")}
@@ -234,7 +215,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Documents Grid */}
+      
         <div
           className={`transform transition-all duration-700 delay-500 ${
             isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
@@ -271,9 +252,13 @@ const Dashboard = () => {
                     </span>
                     <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Link href="/summary">
-                        <button className="p-1 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors">
-                          <Eye className="w-4 h-4" />
-                        </button>
+                       <button 
+           
+            className="group relative p-3 hover:bg-blue-100 text-blue-600 rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-blue-200 bg-white"
+          >
+            <Eye className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+          
+          </button>
                       </Link>
                       <button className="p-1 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors">
                         <Download className="w-4 h-4" />
@@ -378,5 +363,6 @@ const Dashboard = () => {
     </>
   );
 };
+
 
 export default Dashboard;
