@@ -55,7 +55,7 @@ const DocumentUploadPage: React.FC = () => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [recipientEmail, setRecipientEmail] = useState("");
+ 
   const [showForm, setShowForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     title: "",
