@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n";
 import {
   Search,
-  Bell,
-  User,
+
   Download,
   Eye,
   MoreVertical,
@@ -108,16 +107,6 @@ const Dashboard = () => {
                   <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">
                     {t("navbar.welcome")}
                   </span>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <Bell className="w-5 h-5 text-slate-600 cursor-pointer hover:text-blue-600 transition-colors" />
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </div>
-                <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-green-500 rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform">
-                  <User className="w-4 h-4 text-white" />
                 </div>
               </div>
             </div>
@@ -314,7 +303,9 @@ const Dashboard = () => {
             </div>
           )}
         </div>
-        <RagUI />
+        <div>
+          <RagUI />
+        </div>
       </div>
 
       <style jsx>{`
