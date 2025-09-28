@@ -12,7 +12,7 @@ type FileOption = {
   id: string;
   name: string;
   description: string;
-  endpoint?: string; // Optional API endpoint for different file types
+  endpoint?: string;
 };
 
 const askQuestion = async (question: string, selectedFile?: string) => {
