@@ -1,28 +1,38 @@
-import axios from "axios";
-
-const API_BASE_URL = "http://127.0.0.1:5001";
-
+// frontend/lib/api.ts
 export interface Summary {
   document_id: string;
-  title: string | null;
+  title?: string;
   summary_text: string;
   department_id: string;
 }
 
-export interface SummariesResponse {
-  summaries: Summary[];
+export async function fetchSummaries(userId: string) {
+  const res = await fetch("http://127.0.0.1:5001/summary/summaries", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: userId }),
+  });
+
+  if (!res.ok) {
+    const errorDetails = await res.text();
+    console.error("Fetch Error Details:", errorDetails);
+    throw new Error("Failed to fetch summaries");
+  }
+
+  return res.json();
 }
 
-export const fetchSummaries = async (
-  userId: string
-): Promise<SummariesResponse> => {
-  try {
-    const response = await axios.post(`${API_BASE_URL}/summary/summaries`, {
-      user_id: userId,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching summaries:", error);
-    throw error;
-  }
-};
+export async function downloadSummariesPDF(summaries: Summary[]) {
+  const res = await fetch("http://127.0.0.1:5001/summary/summaries/download", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ summaries }),
+  });
+
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "summaries.pdf";
+  link.click();
+}

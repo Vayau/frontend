@@ -16,11 +16,15 @@ import "@/lib/i18n";
 
 const SummaryViewComponent = () => {
   const { t } = useTranslation();
-  const [showSummary, setShowSummary] = useState(true);
   const [summaries, setSummaries] = useState<Summary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const userId = useUserStore((state) => state.userId);
+
+  const [selectedSummary, setSelectedSummary] = useState<Summary | null>(null);
+
+  const openSummaryModal = (summary: Summary) => setSelectedSummary(summary);
+  const closeSummaryModal = () => setSelectedSummary(null);
 
   useEffect(() => {
     const loadSummaries = async () => {
@@ -46,34 +50,23 @@ const SummaryViewComponent = () => {
     loadSummaries();
   }, [userId]);
 
-  const [selectedSummary, setSelectedSummary] = useState<Summary | null>(null);
-
-  const openSummaryModal = (summary: Summary): void => {
-    setSelectedSummary(summary);
-  };
-
-  const closeSummaryModal = (): void => {
-    setSelectedSummary(null);
-  };
-
   return (
     <>
       <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-yellow-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">K</span>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">
-                  {t("navbar.welcome")}
-                </span>
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-yellow-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">K</span>
               </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent">
+                {t("navbar.welcome")}
+              </span>
             </div>
           </div>
         </div>
       </nav>
+
       <div className="relative p-8 bg-gradient-to-br from-indigo-50 via-white to-cyan-50 min-h-screen">
         <div className="max-w-5xl mx-auto">
           <div className="mb-12 text-center">
@@ -97,12 +90,8 @@ const SummaryViewComponent = () => {
           {error && (
             <div className="bg-gradient-to-r from-red-50 to-pink-50 border-l-4 border-red-500 rounded-xl p-6 mb-8 shadow-lg">
               <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <AlertCircle className="h-6 w-6 text-red-600" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-lg font-medium text-red-800">{error}</p>
-                </div>
+                <AlertCircle className="h-6 w-6 text-red-600" />
+                <p className="ml-3 text-lg font-medium text-red-800">{error}</p>
               </div>
             </div>
           )}
@@ -123,40 +112,34 @@ const SummaryViewComponent = () => {
 
           {!loading && !error && summaries.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {summaries.map((summary: Summary, index: number) => (
+              {summaries.map((summary, index) => (
                 <div
                   key={summary.document_id}
-                  className={`transition-all duration-700 ease-out transform cursor-pointer ${
-                    showSummary
-                      ? "opacity-100 translate-y-0 scale-100"
-                      : "opacity-0 -translate-y-8 scale-95 pointer-events-none"
-                  }`}
-                  style={{ animationDelay: `${index * 150}ms` }}
+                  className="transition-all duration-700 ease-out transform cursor-pointer"
+                  onClick={() => openSummaryModal(summary)}
                 >
-                  <div
-                    className="bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-500 hover:shadow-2xl shadow-lg hover:shadow-xl aspect-square hover:scale-105"
-                    onClick={() => openSummaryModal(summary)}
-                  >
+                  <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden transition-all duration-500 hover:shadow-2xl shadow-lg hover:scale-105 aspect-square">
                     <div className="h-full flex flex-col bg-green-100 text-black p-6">
                       <div className="flex-1 flex flex-col justify-center items-center text-center space-y-4">
-                        <div className="bg-white/20 rounded-2xl p-4 mb-2 transition-transform duration-300 group-hover:scale-110">
+                        <div className="bg-white/20 rounded-2xl p-4 mb-2">
                           <FileText className="h-10 w-10" />
                         </div>
-                        <div>
-                          <h3 className="text-lg font-bold mb-2 line-clamp-2 leading-tight">
-                            {summary.title ||
-                              `Document ${summary.document_id.slice(0, 8)}`}
-                          </h3>
-                          <div className="flex items-center justify-center space-x-2 bg-white/20 rounded-lg px-3 py-1 mb-4">
-                            <Tag className="h-3 w-3" />
-                            <span className="text-xs font-medium">
-                              {summary.department_id.slice(0, 8)}...
-                            </span>
-                          </div>
+                        <h3 className="text-lg font-bold mb-2 line-clamp-2 leading-tight">
+                          {summary.title ||
+                            `Document ${summary.document_id.slice(0, 8)}`}
+                        </h3>
+                        <div className="flex items-center justify-center space-x-2 bg-white/20 rounded-lg px-3 py-1 mb-4">
+                          <Tag className="h-3 w-3" />
+                          <span className="text-xs font-medium">
+                            {summary.department_id.slice(0, 8)}...
+                          </span>
                         </div>
+                        <p className="text-gray-700 text-sm line-clamp-3">
+                          {summary.summary_text}
+                        </p>
                       </div>
 
-                      <div className="flex items-center justify-center space-x-2 bg-white/20 rounded-xl py-3 text-sm font-semibold transition-all duration-200">
+                      <div className="flex items-center justify-center space-x-2 bg-white/20 rounded-xl py-3 text-sm font-semibold">
                         <Eye className="h-4 w-4" />
                         <span>View Summary</span>
                       </div>
@@ -203,56 +186,32 @@ const SummaryViewComponent = () => {
               <div className="p-8 overflow-y-auto max-h-[60vh]">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6">
-                    <div className="flex items-center space-x-3 mb-3">
-                      <div>
-                        <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                          Department
-                        </p>
-                        <p className="text-xl font-bold text-gray-800">
-                          {selectedSummary.department_id.slice(0, 12)}...
-                        </p>
-                      </div>
-                    </div>
+                    <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                      Department
+                    </p>
+                    <p className="text-xl font-bold text-gray-800">
+                      {selectedSummary.department_id}
+                    </p>
                   </div>
 
                   <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-6">
-                    <div className="flex items-center space-x-3 mb-3">
-                      <div>
-                        <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-                          Document ID
-                        </p>
-                        <p className="text-xl font-bold text-gray-800">
-                          {selectedSummary.document_id.slice(0, 16)}...
-                        </p>
-                      </div>
-                    </div>
+                    <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                      Document ID
+                    </p>
+                    <p className="text-xl font-bold text-gray-800">
+                      {selectedSummary.document_id}
+                    </p>
                   </div>
                 </div>
 
-                <div className="mb-8">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center space-x-2">
-                    <span>Summary</span>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">
+                    Summary
                   </h3>
                   <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
                     <p className="text-gray-700 leading-relaxed text-lg">
                       {selectedSummary.summary_text}
                     </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 px-8 py-6 border-t border-gray-100">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-2 text-sm text-gray-500"></div>
-                  <div className="flex space-x-4">
-                    <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl flex items-center space-x-2">
-                      <ExternalLink className="h-4 w-4" />
-                      <span>View Details</span>
-                    </button>
-                    <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl flex items-center space-x-2">
-                      <Download className="h-4 w-4" />
-                      <span>Download PDF</span>
-                    </button>
                   </div>
                 </div>
               </div>
@@ -267,7 +226,12 @@ const SummaryViewComponent = () => {
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
-
+          .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
           @keyframes modal-in {
             from {
               opacity: 0;
@@ -278,29 +242,13 @@ const SummaryViewComponent = () => {
               transform: scale(1) translateY(0);
             }
           }
-
           .animate-modal-in {
             animation: modal-in 0.3s ease-out forwards;
-          }
-
-          @keyframes fade-in-up {
-            from {
-              opacity: 0;
-              transform: translateY(30px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
-          .animate-fade-in-up {
-            animation: fade-in-up 0.8s ease-out forwards;
-            opacity: 0;
           }
         `}</style>
       </div>
     </>
   );
 };
+
 export default SummaryViewComponent;
