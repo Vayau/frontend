@@ -1,33 +1,44 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-  Eye,
-  X,
-  FileText,
-  Tag,
-  AlertCircle,
-  ExternalLink,
-  Download,
-} from "lucide-react";
+import { Eye, X, FileText, Tag, AlertCircle } from "lucide-react";
 import { useUserStore } from "@/stores/UserStore";
 import { fetchSummaries, Summary } from "@/lib/api";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n";
+import axios from "axios";
 
-const SummaryViewComponent = () => {
+// Extend Summary interface to include optional file_url and language
+interface ExtendedSummary extends Summary {
+  language?: string;
+  file_url?: string;
+  document_id: string;
+  department_id: string;
+}
+
+const SummaryViewComponent: React.FC = () => {
   const { t } = useTranslation();
-  const [summaries, setSummaries] = useState<Summary[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [summaries, setSummaries] = useState<ExtendedSummary[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const userId = useUserStore((state) => state.userId);
 
-  const [selectedSummary, setSelectedSummary] = useState<Summary | null>(null);
+  const [selectedSummary, setSelectedSummary] =
+    useState<ExtendedSummary | null>(null);
+  const [translationResult, setTranslationResult] = useState<string | null>(
+    null
+  );
+  const [translationError, setTranslationError] = useState<string | null>(null);
 
-  const openSummaryModal = (summary: Summary) => setSelectedSummary(summary);
-  const closeSummaryModal = () => setSelectedSummary(null);
+  const openSummaryModal = (summary: ExtendedSummary): void => {
+    setSelectedSummary(summary);
+    setTranslationResult(null);
+    setTranslationError(null);
+  };
+
+  const closeSummaryModal = (): void => setSelectedSummary(null);
 
   useEffect(() => {
-    const loadSummaries = async () => {
+    const loadSummaries = async (): Promise<void> => {
       if (!userId) {
         setError("User not logged in");
         setLoading(false);
@@ -38,6 +49,7 @@ const SummaryViewComponent = () => {
         setLoading(true);
         setError(null);
         const response = await fetchSummaries(userId);
+
         setSummaries(response.summaries);
       } catch (err) {
         console.error("Error loading summaries:", err);
@@ -49,6 +61,27 @@ const SummaryViewComponent = () => {
 
     loadSummaries();
   }, [userId]);
+
+  const translateSummary = async (text: string) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:5001/translate/translate-summary",
+        { text }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Translation API error:",
+          error.response?.data || error.message
+        );
+        throw error.response?.data || { error: "Something went wrong" };
+      } else {
+        console.error("Translation API error:", error);
+        throw { error: "Something went wrong" };
+      }
+    }
+  };
 
   return (
     <>
@@ -112,7 +145,7 @@ const SummaryViewComponent = () => {
 
           {!loading && !error && summaries.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {summaries.map((summary, index) => (
+              {summaries.map((summary) => (
                 <div
                   key={summary.document_id}
                   className="transition-all duration-700 ease-out transform cursor-pointer"
@@ -151,6 +184,7 @@ const SummaryViewComponent = () => {
           )}
         </div>
 
+        {/* Modal */}
         {selectedSummary && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
@@ -213,6 +247,62 @@ const SummaryViewComponent = () => {
                       {selectedSummary.summary_text}
                     </p>
                   </div>
+
+                  {/* Translate Button */}
+                  <button
+                    className="w-full bg-gradient-to-r from-yellow-600 to-green-600 text-white px-6 py-2 rounded-full mt-6"
+                    onClick={async () => {
+                      if (selectedSummary) {
+                        setTranslationError(null);
+                        setTranslationResult(null);
+                        try {
+                          const translated = await translateSummary(
+                            selectedSummary.summary_text
+                          );
+                          setTranslationResult(
+                            typeof translated.translated_text === "string"
+                              ? translated.translated_text
+                              : JSON.stringify(translated.translated_text)
+                          );
+                        } catch (err: unknown) {
+                          setTranslationError(
+                            err && typeof err === "object" && "message" in err
+                              ? String((err as { message: unknown }).message)
+                              : "Translation failed"
+                          );
+                        }
+                      }
+                    }}
+                  >
+                    {t("landnavbar.menu.translate")}
+                  </button>
+
+                  {/* View Original Document */}
+                  {selectedSummary.file_url && (
+                    <a
+                      href={selectedSummary.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full text-center mt-4 px-6 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition"
+                    >
+                      View Original Document
+                    </a>
+                  )}
+
+                  {translationError && (
+                    <p className="text-red-600 mt-4 font-semibold">
+                      {translationError}
+                    </p>
+                  )}
+
+                  {translationResult && (
+                    <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <p className="text-green-900 font-medium">
+                        Malayalam Translation:
+                      </p>
+                      <p className="mt-2 text-lg">{translationResult}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

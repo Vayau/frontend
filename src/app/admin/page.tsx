@@ -55,7 +55,7 @@ const DocumentUploadPage: React.FC = () => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
- 
+
   const [showForm, setShowForm] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -192,7 +192,7 @@ const DocumentUploadPage: React.FC = () => {
     const uploadFormData = new FormData();
     uploadFormData.append("file", uploadedFile);
     uploadFormData.append("title", formData.title);
-    uploadFormData.append("type", formData.type);
+
     uploadFormData.append("language", formData.language);
     uploadFormData.append("source", "official website");
     uploadFormData.append("uploaded_by", userId);
@@ -466,43 +466,6 @@ const DocumentUploadPage: React.FC = () => {
                             <div className="absolute -bottom-6 left-0 flex items-center text-red-500 text-sm animate-slide-in">
                               <AlertCircle className="w-4 h-4 mr-1" />
                               {errors.title}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <label
-                          htmlFor="type"
-                          className="block text-sm font-bold text-gray-900 mb-2 flex items-center"
-                        >
-                          <FileType className="w-4 h-4 mr-2 text-purple-600" />
-                          Document Type *
-                        </label>
-                        <div className="relative">
-                          <select
-                            id="type"
-                            value={formData.type}
-                            onChange={(e) =>
-                              handleInputChange("type", e.target.value)
-                            }
-                            className={`w-full px-4 py-4 border-2 rounded-2xl focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300 bg-white/80 backdrop-blur-sm text-lg appearance-none ${
-                              errors.type
-                                ? "border-red-300 focus:border-red-500"
-                                : "border-gray-200 hover:border-purple-300"
-                            }`}
-                          >
-                            <option value="">Select document type</option>
-                            {documentTypes.map((type) => (
-                              <option key={type} value={type}>
-                                {type}
-                              </option>
-                            ))}
-                          </select>
-                          {errors.type && (
-                            <div className="absolute -bottom-6 left-0 flex items-center text-red-500 text-sm animate-slide-in">
-                              <AlertCircle className="w-4 h-4 mr-1" />
-                              {errors.type}
                             </div>
                           )}
                         </div>

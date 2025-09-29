@@ -42,7 +42,8 @@
     "menu": {
       "features": "Features",
       "language": "Select Language",
-      "getStarted": "Get Started"
+      "getStarted": "Get Started",
+      "translate": "translate"
     }
   },
   "hero": {
